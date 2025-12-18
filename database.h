@@ -18,7 +18,13 @@ void listar_pessoas(FILE *fname);
 int buscar_pessoa(FILE *fname, const char *nome);
 bool alterar_nome(FILE *fname);
 
-
+//algoritmos de ordenacao
+int ler_pessoas(FILE *fname, pessoa **arr);
+int compara_idade(pessoa *p1, pessoa *p2);
+int compara_nome(pessoa *p1, pessoa *p2);
+void insertion_sort(pessoa *arr, int n, int (*cmp) (pessoa*, pessoa*));
+void insercao(pessoa *arr, int n, pessoa valor, int (*cmp) (pessoa*, pessoa*));
+void imprime_arranjo(pessoa *arr, int n);
 
 
 

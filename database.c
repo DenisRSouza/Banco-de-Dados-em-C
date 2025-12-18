@@ -84,3 +84,60 @@ bool alterar_nome(FILE *fname){
     return true;
 
 }
+
+int ler_pessoas(FILE *fname, pessoa **arr){
+    fseek(fname, 0, SEEK_END);
+    int n = ftell(fname)/sizeof(pessoa);
+    *arr = (pessoa*) malloc(n * sizeof(pessoa));
+    fseek(fname, 0, SEEK_SET);
+
+    fread(*arr, sizeof(pessoa), n, fname);
+
+    return n;
+}
+
+void imprime_arranjo(pessoa *arr, int n){
+    for( int i = 0; i < n; i++ )
+        printf("Nome: %s, Idade: %d\n",arr[i].name, arr[i].age);
+}
+
+int compara_idade(pessoa *p1, pessoa *p2){
+    return p1 -> age - p2 -> age;
+}
+
+int compara_nome(pessoa *p1, pessoa *p2){
+    int i = 0;
+    while(p1->name[i] != '\0' && p2->name[i] != '\0'){
+        if(p1->name[i] > p2->name[i]){
+            return 1;
+        }
+        if(p1->name[i] < p2->name[i]){
+            return - 1;
+        }
+        i++;
+    }
+    if(p1->name[i] == '\0' && p2->name[i] == '\0'){
+        return 0;
+    }
+    else if(p1->name[i] =='\0'){
+        return - 1;
+    }
+    else{
+        return 1;
+    }
+}
+
+void insercao(pessoa *arr, int n, pessoa valor, int (*cmp) (pessoa*, pessoa*)){
+    int i = n - 1;
+    while(i >= 0 && cmp(&arr[i], &valor) > 0){
+        arr[i+1] = arr[i];
+        i--;
+    }
+    arr[i+1] = valor;
+}
+
+void insertion_sort(pessoa *arr, int n, int (*cmp) (pessoa*, pessoa*)){
+    for(int i = 0; i < n; i++){
+        insercao(arr, i, arr[i], cmp);
+    }
+}
